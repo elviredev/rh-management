@@ -85,7 +85,7 @@ class DatabaseSeeder extends Seeder
       $department = Department::create([
         'name' => $deptName,
         'code' => strtoupper(substr(str_replace(' ', '', $deptName), 0, 3)),
-        'description' => "The $deptName department.}"
+        'description' => "The $deptName department."
       ]);
       $departments->push($department);
 
