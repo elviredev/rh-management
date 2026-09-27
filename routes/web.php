@@ -10,7 +10,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
   Route::inertia('dashboard', 'dashboard')->name('dashboard');
 
   // -- People administration (RH & admins only) --------------------------
-  Route::middleware(['roles:admin,hr'])->group(function () {
+  Route::middleware(['role:admin,hr'])->group(function () {
     Route::get('departments', [DepartmentController::class, 'index'])->name('departments.index');
     Route::post('departments', [DepartmentController::class, 'store'])->name('departments.store');
     Route::patch('departments/{department}', [DepartmentController::class, 'update'])->name('departments.update');

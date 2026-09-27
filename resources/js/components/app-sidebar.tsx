@@ -1,5 +1,5 @@
-import { Link } from '@inertiajs/react'
-import { BookOpen, FolderGit2, LayoutGrid } from 'lucide-react'
+import { Link, usePage } from '@inertiajs/react'
+import { BookOpen, FolderGit2, LayoutGrid, BriefcaseBusiness, Building2 } from 'lucide-react'
 import AppLogo from '@/components/app-logo'
 import { NavFooter } from '@/components/nav-footer'
 import { NavMain } from '@/components/nav-main'
@@ -14,13 +14,30 @@ import {
   SidebarMenuItem,
 } from '@/components/ui/sidebar'
 import { dashboard } from '@/routes'
-import type { NavItem } from '@/types'
+import type { Auth, NavItem } from '@/types'
 
-const mainNavItems: NavItem[] = [
+type Role = Auth['user']['role']
+
+// Chaque élément indique les rôles autorisés à le voir. Undefined signifie "tout le monde"
+type GateNavItem = NavItem & { roles?: Role[] }
+
+const mainNavItems: GateNavItem[] = [
   {
     title: 'Dashboard',
     href: dashboard(),
     icon: LayoutGrid,
+  },
+  {
+    title: 'Departments',
+    href: '/departments',
+    icon: Building2,
+    roles: ['admin', 'hr'],
+  },
+  {
+    title: 'Positions',
+    href: '/positions',
+    icon: BriefcaseBusiness,
+    roles: ['admin', 'hr'],
   },
 ]
 
@@ -38,6 +55,12 @@ const footerNavItems: NavItem[] = [
 ]
 
 export function AppSidebar() {
+  const { auth } = usePage<{ auth: Auth }>().props
+  const role = auth.user.role
+
+  // fitrage
+  const items = mainNavItems.filter((item) => !item.roles || item.roles.includes(role))
+
   return (
     <Sidebar collapsible="icon" variant="inset">
       <SidebarHeader>
@@ -53,7 +76,7 @@ export function AppSidebar() {
       </SidebarHeader>
 
       <SidebarContent>
-        <NavMain items={mainNavItems} />
+        <NavMain items={items} />
       </SidebarContent>
 
       <SidebarFooter>

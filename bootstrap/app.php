@@ -19,7 +19,7 @@ return Application::configure(basePath: dirname(__DIR__))
     $middleware->encryptCookies(except: ['appearance', 'sidebar_state']);
 
     $middleware->alias([
-      'roles' => EnsureUserHasRole::class
+      'role' => EnsureUserHasRole::class
     ]);
 
     $middleware->web(append: [
