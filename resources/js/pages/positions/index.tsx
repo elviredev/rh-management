@@ -105,7 +105,7 @@ export default function PositionsIndex({ positions, departments, filters }: Prop
         </div>
 
         {/* Recherche - Filtres */}
-        <div className="mb-4 flex-wrap gap-2">
+        <div className="mb-4 flex flex-wrap gap-2">
           <form
             onSubmit={(e) => {
               e.preventDefault()

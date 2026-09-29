@@ -3,19 +3,23 @@
 namespace App\Models;
 
 use Database\Factories\EmployeeFactory;
+use Illuminate\Database\Eloquent\Attributes\Appends;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Facades\Storage;
 
 #[Fillable(['department_id', 'position_id', 'user_id', 'manager_id', 'first_name', 'last_name', 'email', 'phone', 'avatar_path', 'address', 'employment_status', 'hire_date', 'salary'])]
+#[Appends(['full_name', 'avatar_url'])]
 class Employee extends Model
 {
   /** @use HasFactory<EmployeeFactory> */
   use HasFactory;
 
+  // Casts
   protected function casts(): array
   {
     return [
@@ -24,11 +28,23 @@ class Employee extends Model
     ];
   }
 
+  // Accesseurs
   protected function fullName(): Attribute
   {
     return Attribute::get(fn (): string => "{$this->first_name} {$this->last_name}");
   }
 
+  /**
+   * Une URL publique pour l'avatar téléchargé, ou null si aucun n'est défini.
+   * @return Attribute<string|null, never>
+   */
+  protected function avatarUrl(): Attribute
+  {
+    return Attribute::get(fn (): ?string => $this->avatar_path ? Storage::url($this->avatar_path) : null);
+  }
+
+
+  // Relations
   public function user(): BelongsTo
   {
     return $this->belongsTo(User::class);
