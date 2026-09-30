@@ -8,8 +8,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import InputError from '@/components/input-error'
-import { Users, Pencil, Plus, Search, Trash2, X } from 'lucide-react'
-import DepartmentsIndex from '@/pages/departments'
+import { Users, Pencil, Plus, Search, Trash2 } from 'lucide-react'
 
 interface Filters {
   search?: string
