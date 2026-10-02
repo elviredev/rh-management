@@ -86,7 +86,7 @@ export default function LeaveTypesIndex({ leaveTypes }: Props) {
           </Button>
         </div>
 
-        {/* Aucun département */}
+        {/* Aucun type de congés */}
         {leaveTypes.length === 0 ? (
           <div className="flex flex-col items-center justify-center rounded-xl border border-dashed py-24 text-center">
             <CalendarClock className="mb-3 h-12 w-12 text-muted-foreground" />

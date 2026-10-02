@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\LeaveRequestController;
 use App\Http\Controllers\LeaveTypeController;
 use App\Http\Controllers\PositionController;
 use Illuminate\Support\Facades\Route;
@@ -24,20 +25,20 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::delete('positions/{position}', [PositionController::class, 'destroy'])->name('positions.destroy');
   });
 
-  // -- RH, admins, managers only --------------------------
+  // RH, admins, managers only
   Route::middleware(['role:admin,hr,manager'])->group(function () {
     Route::get('employees', [EmployeeController::class, 'index'])->name('employees.index');
     Route::get('employees/{employee}', [EmployeeController::class, 'show'])->name('employees.show');
   });
 
-  // -- Only RH & admins can create, edit or remove employees. --------------------------
+  // Only RH & admins can create, edit or remove employees.
   Route::middleware('role:admin,hr')->group(function () {
     Route::post('employees', [EmployeeController::class, 'store'])->name('employees.store');
     Route::patch('employees/{employee}', [EmployeeController::class, 'update'])->name('employees.update');
     Route::delete('employees/{employee}', [EmployeeController::class, 'destroy'])->name('employees.destroy');
   });
 
-  // -- Leave Types are configured by RH & admins. --------------------------
+  // Leave Types are configured by RH & admins.
   Route::middleware('role:admin,hr')->group(function () {
     Route::get('leave-types', [LeaveTypeController::class, 'index'])->name('leave-types.index');
     Route::post('leave-types', [LeaveTypeController::class, 'store'])->name('leave-types.store');
@@ -45,6 +46,16 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::delete('leave-types/{leaveType}', [LeaveTypeController::class, 'destroy'])->name('leave-types.destroy');
   });
 
+  // -- Leave Management --------------------------------------------------------
+  // Toute personne connectée peut consulter la liste des congés et déposer une demande...
+  Route::get('leave-requests', [LeaveRequestController::class, 'index'])->name('leave-requests.index');
+  Route::post('leave-requests', [LeaveRequestController::class, 'store'])->name('leave-requests.store');
+
+  // ...mais seuls les RH, admins, managers peuvent les approuver ou les refuser.
+  Route::middleware(['role:admin,hr,manager'])->group(function () {
+    Route::patch('leave-requests/{leaveRequest}/approve', [LeaveRequestController::class, 'approve'])->name('leave-requests.approve');
+    Route::patch('leave-requests/{leaveRequest}/reject', [LeaveRequestController::class, 'reject'])->name('leave-requests.reject');
+  });
 });
 
 require __DIR__.'/settings.php';
