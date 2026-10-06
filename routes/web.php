@@ -5,6 +5,7 @@ use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\LeaveRequestController;
 use App\Http\Controllers\LeaveTypeController;
+use App\Http\Controllers\PayslipController;
 use App\Http\Controllers\PositionController;
 use Illuminate\Support\Facades\Route;
 
@@ -67,6 +68,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
   // RH, admins & managers see the company-wide timesheets
   Route::middleware(['role:admin,hr,manager'])->group(function () {
     Route::get('timesheets', [AttendanceController::class, 'timesheets'])->name('timesheets.index');
+  });
+
+  // -- Payroll (RH & admins) --------------------------------------------------------
+  Route::middleware(['role:admin,hr'])->group(function () {
+    Route::get('payslips', [PayslipController::class, 'index'])->name('payslips.index');
+    Route::post('payslips', [PayslipController::class, 'store'])->name('payslips.store');
+    Route::get('payslips/{payslip}', [PayslipController::class, 'show'])->name('payslips.show');
   });
 
 });

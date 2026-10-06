@@ -10,6 +10,7 @@ import {
   CalendarClock,
   Clock,
   CalendarCheck,
+  Receipt
 } from 'lucide-react'
 import AppLogo from '@/components/app-logo'
 import { NavFooter } from '@/components/nav-footer'
@@ -77,6 +78,12 @@ const mainNavItems: GateNavItem[] = [
     href: '/timesheets',
     icon: CalendarCheck,
     roles: ['admin', 'hr', 'manager'],
+  },
+  {
+    title: 'Payslips',
+    href: '/payslips',
+    icon: Receipt,
+    roles: ['admin', 'hr'],
   },
 ]
 
