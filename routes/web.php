@@ -8,11 +8,20 @@ use App\Http\Controllers\LeaveRequestController;
 use App\Http\Controllers\LeaveTypeController;
 use App\Http\Controllers\PayslipController;
 use App\Http\Controllers\PositionController;
+use App\Http\Controllers\ReportController;
 use Illuminate\Support\Facades\Route;
 
 Route::inertia('/', 'welcome')->name('home');
 
 Route::middleware(['auth', 'verified'])->group(function () {
+
+  // ── Reports & exports (HR & admins) ─────────────────────────────────────
+  Route::middleware('role:admin,hr')->group(function () {
+    Route::get('reports', [ReportController::class, 'index'])->name('reports.index');
+    Route::get('reports/employees.csv', [ReportController::class, 'employees'])->name('reports.employees');
+    Route::get('reports/payroll.csv', [ReportController::class, 'payroll'])->name('reports.payroll');
+  });
+
   Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
   // -- People administration (RH & admins only) --------------------------

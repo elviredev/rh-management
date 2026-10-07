@@ -10,7 +10,8 @@ import {
   CalendarClock,
   Clock,
   CalendarCheck,
-  Receipt
+  Receipt,
+  FileBarChart,
 } from 'lucide-react'
 import AppLogo from '@/components/app-logo'
 import { NavFooter } from '@/components/nav-footer'
@@ -83,6 +84,12 @@ const mainNavItems: GateNavItem[] = [
     title: 'Payslips',
     href: '/payslips',
     icon: Receipt,
+    roles: ['admin', 'hr'],
+  },
+  {
+    title: 'Reports',
+    href: '/reports',
+    icon: FileBarChart,
     roles: ['admin', 'hr'],
   },
 ]
